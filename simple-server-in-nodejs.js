@@ -10,18 +10,18 @@ http
   .createServer((request, response) => {
     console.log('Port Number : 3000');
 
-    // change the MIME type from 'text/plain' to 'text/html'
+    // change the MIME type from 'text/plain' to 'application/pdf'
     response.writeHead(200, {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/pdf'
     });
 
-    let json_respone = {
-      status: 200,
-      message: 'successful',
-      result: ['sunday', 'monday', 'tuesday', 'wednesday'],
-      code: 2000
-    };
-    console.log('Server Running');
-    response.end(JSON.stringify(json_respone));
+    fs.readFile('index.pdf', (error, data) => {
+      if (error) {
+        response.json({ status: 'error', msg: 'error' });
+      } else {
+        response.write(data);
+        response.end();
+      }
+    });
   })
   .listen(port);
