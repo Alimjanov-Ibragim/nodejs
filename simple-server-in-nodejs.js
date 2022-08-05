@@ -1,27 +1,19 @@
+//serve-mp4.js
 var http = require('http');
 var fs = require('fs');
-
-console.log('Server will listen at :  127.0.0.1:3000 ');
-
-// var host = '127.0.0.1';
-var port = 3000;
-
 http
-  .createServer((request, response) => {
+  .createServer(function (req, res) {
     console.log('Port Number : 3000');
-
-    // change the MIME type from 'text/plain' to 'application/pdf'
-    response.writeHead(200, {
-      'Content-Type': 'audio/mp3'
-    });
-
-    fs.exists('audio.mp3', exists => {
+    // change the MIME type to 'video/mp4'
+    res.writeHead(200, { 'Content-Type': 'video/mp4' });
+    fs.exists('video.mp4', function (exists) {
       if (exists) {
-        var rstream = fs.createReadStream('audio.mp3');
-        rstream.pipe(response);
+        var rstream = fs.createReadStream('video.mp4');
+        rstream.pipe(res);
       } else {
-        response.end('Its a 404');
+        res.send('Its a 404');
+        res.end();
       }
     });
   })
-  .listen(port);
+  .listen(3000);
